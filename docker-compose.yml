@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - app-network
+    environment:
+      - HOSTNAME=${HOSTNAME}
+      - PORT=${PORT}
+      - USERNAME=${USERNAME}
+      - PASSWORD=${PASSWORD}
+
+networks:
+  app-network:
+    driver: bridge
