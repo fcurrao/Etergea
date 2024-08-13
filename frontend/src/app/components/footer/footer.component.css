@@ -1,0 +1,39 @@
+
+.noP {
+    font-size: larger;
+    margin-right: 2%;
+    width: auto;
+    margin: 0; 
+}
+
+.w-more {
+    min-width: 90px;
+}
+
+.noB {
+    margin-right: 2%;
+    width: auto;
+    margin: 0;
+    font-size: inherit;
+    background: none;
+    border: none;
+    color: white;
+}
+
+.d-flex {
+    padding: 0 2%;
+    display: flex;
+    align-items: center;
+}
+
+.between {
+    justify-content: space-between;
+}
+ 
+ 
+.background {
+    background: linear-gradient(to top, #0e0e0e, #7b7b7b);
+    width: 100%;
+    height: 5%;
+    color: white;
+}

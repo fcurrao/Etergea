@@ -1,0 +1,23 @@
+ 
+  .wrapper{ 
+    height: 97% ;
+  }
+
+  .background{
+    background: linear-gradient(to top, #0e0e0e, #7b7b7b); 
+    color: white;
+  }
+  .content-wrapper {
+    /* display: block; */
+    /* height: 100%; */
+  }
+
+  
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+/* Ocultar el logo de Leaflet */
+.leaflet-control-container .leaflet-control-logo {
+  display: none !important;
+}

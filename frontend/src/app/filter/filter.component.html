@@ -1,0 +1,119 @@
+<div class="filterContainer">
+    <div class="searchContainer">
+        <!-- BUSQUEDA / FILTROS  -->
+        <div class="dflex search">
+            <h3 class="noh3"> Seleccione Equipos</h3>
+            <div class="dflex flex-row">
+                <input (keydown.enter)="addToList()" type="text" id='idResult' class="form-control m2 "
+                    placeholder="N° de equipo..  Separe con coma(,). Para rango use guion (-)">
+            </div>
+            <button (click)="addToList()" class="btn btn-primary m2"> &nbsp;&nbsp;&nbsp; Incorporar
+                &nbsp;&nbsp;&nbsp; </button>
+        </div>
+    </div>
+
+    <!-- BOTONES -->
+    <div *ngIf="this.datas.length !== 0" class="menuFilters">
+        <button class="btn btn-secondary" (click)="checkAll()">Marcar/Desmarcar Todos</button>
+        <button class="btn btn-secondary" (click)="deleteAll()">Borrar Todos</button>
+        <button class="btn btn-primary"  (click)="testAll()">Prueba General</button>
+        <button class="btn btn-danger" (click)="resetAll()">Reiniciar Seleccionados</button>
+    </div>
+
+    
+    <!-- LOADING -->
+     <app-loading *ngIf="this.loading"></app-loading>
+
+    <div class="result" *ngIf="datas && datas.length > 0">
+        <div class="cards-container">
+            <div class="card" *ngFor="let data of datas">
+                <div class="card-content">
+                    <!-- INFO ETERGEA  -->
+                    <button class="card-x" (click)="deleteOfList(data)">✖</button>
+                    <div class="card-item">
+                        <input id="data.name" class="checkboxEach" type="checkbox" [(ngModel)]="data.checked">
+                    </div>
+                    <div class="card-item">
+                        <span class="card-title info" title="Numero {{data.name}}">{{ data.name }}</span>
+                    </div>
+                    <div class="card-item">
+                        <span class="separation"> ||</span>
+                    </div>
+                    <!-- GPS   -->
+                    <div class="card-item">
+                        <button *ngIf="!getDeviceStatus(data.data.GPS.data,0).valid" (click)="reebotThis('gps1')"
+                            class="status red notButton" title="GPS 1: Desconectado">🔴</button>
+                        <button *ngIf="getDeviceStatus(data.data.GPS.data,0).valid" (click)="reebotThis('gps1')"
+                            class="status  green notButton" title="GPS 1 :  OK">🟢</button>
+                        <button *ngIf="!getDeviceStatus(data.data.GPS.data,1).valid" (click)="reebotThis('gps2')"
+                            class="status red notButton" title=" GPS 2 : Desconectado">🔴</button>
+                        <button *ngIf="getDeviceStatus(data.data.GPS.data,1).valid" (click)="reebotThis('gps2')"
+                            class="status  green notButton" title="GPS 2 :  OK">🟢</button>
+                        GPS
+                    </div>
+                    <!-- GPRS  -->
+                    <div class="card-item">
+                        <button *ngIf="!getDeviceStatus(data.data.GPRS.data,0)" (click)="reebotThis('gprs1')"
+                            class="status red notButton" title="GPRS 1: Desconectado">🔴</button>
+                        <button *ngIf="getDeviceStatus(data.data.GPRS.data,0)" (click)="reebotThis('gprs1')"
+                            class="status  green notButton" title="GPRS 1 :  OK">🟢</button>
+                        <button *ngIf="!getDeviceStatus(data.data.GPRS.data,1)" (click)="reebotThis('gprs2')"
+                            class="status red notButton" title=" GPRS 2 : Desconectado">🔴</button>
+                        <button *ngIf="getDeviceStatus(data.data.GPRS.data,1)" (click)="reebotThis('gprs2')"
+                            class="status  green notButton" title="GPRS 2 :  OK">🟢</button>
+                        GPRS
+                    </div>
+                    <!-- ALIM Y BATERIA  -->
+                    <div class="card-item">
+                        <button *ngIf="data.data.PM.data.mainPower" (click)="reebotThis('alim')"
+                            class="card-title svgContent notButton" title="Alimentacion: Conectada ">
+                            &nbsp;
+                            <svg class="svgClass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                <path
+                                    d="M96 0C78.3 0 64 14.3 64 32v96h64V32c0-17.7-14.3-32-32-32zM288 0c-17.7 0-32 14.3-32 32v96h64V32c0-17.7-14.3-32-32-32zM32 160c-17.7 0-32 14.3-32 32s14.3 32 32 32v32c0 77.4 55 142 128 156.8V480c0 17.7 14.3 32 32 32s32-14.3 32-32V412.8C297 398 352 333.4 352 256V224c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"
+                                    fill="green" />
+                            </svg>
+                        </button>
+                        <button *ngIf="!data.data.PM.data.mainPower" (click)="reebotThis('alim')"
+                            class="card-title svgContent notButton" title="Alimentacion: Desconectada ">
+                            &nbsp;
+                            <svg class="svgClass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                <path
+                                    d="M96 0C78.3 0 64 14.3 64 32v96h64V32c0-17.7-14.3-32-32-32zM288 0c-17.7 0-32 14.3-32 32v96h64V32c0-17.7-14.3-32-32-32zM32 160c-17.7 0-32 14.3-32 32s14.3 32 32 32v32c0 77.4 55 142 128 156.8V480c0 17.7 14.3 32 32 32s32-14.3 32-32V412.8C297 398 352 333.4 352 256V224c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"
+                                    fill="red" />
+                            </svg>
+                        </button>
+                        ALIM
+                    </div>
+                    <div class="card-item">
+                        <button *ngIf="data.data.PM.data.lowBattery" (click)="reebotThis('batteryLow')"
+                            class="card-title svgContent notButton" title="Bateria Alta">
+                            &nbsp;
+                            <svg class="svgClass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                <path
+                                    d="M464 160c8.8 0 16 7.2 16 16V336c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16H464zM80 96C35.8 96 0 131.8 0 176V336c0 44.2 35.8 80 80 80H464c44.2 0 80-35.8 80-80V320c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32V176c0-44.2-35.8-80-80-80H80zm368 96H96V320H448V192z"
+                                    style="fill: green;" />
+                            </svg>
+                        </button>
+                        <button *ngIf="!data.data.PM.data.lowBattery" (click)="reebotThis('batteryLow')"
+                            class="card-title svgContent notButton" title="Bateria Baja">
+                            &nbsp;
+                            <svg class="svgClass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                <path
+                                    d="M464 160c8.8 0 16 7.2 16 16V336c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16H464zM80 96C35.8 96 0 131.8 0 176V336c0 44.2 35.8 80 80 80H464c44.2 0 80-35.8 80-80V320c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32V176c0-44.2-35.8-80-80-80H80zm368 96H96V320H448V192z"
+                                    style="fill: red;" />
+                            </svg>
+                        </button>
+                        BAT
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ESTADO -->
+    <!-- <h3>Estado: </h3>
+    <textarea id="resultArea" class="textAreaFilter"> </textarea> -->
+</div>
